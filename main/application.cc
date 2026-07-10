@@ -18,7 +18,7 @@
 #include <font_awesome.h>
 
 #define TAG "Application"
-
+#include "src/ai_task.h"
 
 Application::Application() {
     event_group_ = xEventGroupCreate();
@@ -160,6 +160,10 @@ void Application::Initialize() {
 
     // Update the status bar immediately to show the network state
     display->UpdateStatusBar(true);
+    ai_vision_system_ = std::make_unique<AiVisionSystem>();
+    ai_vision_system_->Start();
+    
+    ESP_LOGI(TAG, "AI Vision System embedded successfully.");
 }
 
 void Application::Run() {

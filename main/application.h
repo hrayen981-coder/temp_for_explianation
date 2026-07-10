@@ -17,6 +17,7 @@
 #include "audio_service.h"
 #include "device_state.h"
 #include "device_state_machine.h"
+class AiVisionSystem;
 
 // Main event bits
 #define MAIN_EVENT_SCHEDULE             (1 << 0)
@@ -146,6 +147,7 @@ private:
     bool play_popup_on_listening_ = false;  // Flag to play popup sound after state changes to listening
     int clock_ticks_ = 0;
     TaskHandle_t activation_task_handle_ = nullptr;
+    std::unique_ptr<AiVisionSystem> ai_vision_system_;
 
 
     // Event handlers

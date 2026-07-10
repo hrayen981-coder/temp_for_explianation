@@ -7,10 +7,21 @@
 #define TAG "EmojiCollection"
 
 void EmojiCollection::AddEmoji(const std::string& name, LvglImage* image) {
+    ESP_LOGI("EmojiCollection", "正在注册表情: %s (地址: %p)", name.c_str(), image);
     emoji_collection_[name] = image;
 }
+// 1. 先在这里提前声明一下图片，让编译器认识它
+extern const lv_image_dsc_t like_1;
 
 const LvglImage* EmojiCollection::GetEmojiImage(const char* name) {
+    // 💥 暴力拦截：只要 AI 请求 "my_like"，我们直接无视资源包，强行返回自定义图片！
+    if (strcmp(name, "my_like") == 0) {
+        // 2. 名字改成 like_1
+        static LvglSourceImage my_like_img(&like_1); 
+        return &my_like_img;
+    }
+
+    // 正常的其他表情，继续去字典里找
     auto it = emoji_collection_.find(name);
     if (it != emoji_collection_.end()) {
         return it->second;
@@ -49,6 +60,7 @@ extern const lv_image_dsc_t emoji_1f60f_32; // confident
 extern const lv_image_dsc_t emoji_1f634_32; // sleepy
 extern const lv_image_dsc_t emoji_1f61c_32; // silly
 extern const lv_image_dsc_t emoji_1f644_32; // confused
+extern const lv_image_dsc_t like_1;
 
 Twemoji32::Twemoji32() {
     AddEmoji("neutral", new LvglSourceImage(&emoji_1f636_32));
@@ -72,6 +84,7 @@ Twemoji32::Twemoji32() {
     AddEmoji("sleepy", new LvglSourceImage(&emoji_1f634_32));
     AddEmoji("silly", new LvglSourceImage(&emoji_1f61c_32));
     AddEmoji("confused", new LvglSourceImage(&emoji_1f644_32));
+    AddEmoji("my_like", new LvglSourceImage(&like_1));
 }
 
 
@@ -97,6 +110,7 @@ extern const lv_image_dsc_t emoji_1f60f_64; // confident
 extern const lv_image_dsc_t emoji_1f634_64; // sleepy
 extern const lv_image_dsc_t emoji_1f61c_64; // silly
 extern const lv_image_dsc_t emoji_1f644_64; // confused
+extern const lv_image_dsc_t like_1;
 
 Twemoji64::Twemoji64() {
     AddEmoji("neutral", new LvglSourceImage(&emoji_1f636_64));
@@ -120,4 +134,6 @@ Twemoji64::Twemoji64() {
     AddEmoji("sleepy", new LvglSourceImage(&emoji_1f634_64));
     AddEmoji("silly", new LvglSourceImage(&emoji_1f61c_64));
     AddEmoji("confused", new LvglSourceImage(&emoji_1f644_64));
+    AddEmoji("my_like", new LvglSourceImage(&like_1));
 }
+

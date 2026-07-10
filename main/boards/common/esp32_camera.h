@@ -41,4 +41,9 @@ public:
     virtual bool SetVFlip(bool enabled) override;
     virtual bool SetSwapBytes(bool enabled) override;
     virtual std::string Explain(const std::string &question) override;
+    
+    // 新增：重写基类方法，将私有指针 current_fb_ 暴露给你的 AI 任务
+    virtual const camera_fb_t* GetFrameBuffer() const override { return current_fb_; }
 };
+    
+
